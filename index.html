@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Thebe - Jupyter javascript plugin for static sites</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/thebe/site.css" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="css/edit.css">
+    <!-- This example uses requirejs to dynamically load scripts -->
+    <!-- which is good for local development, because we don't need to rebuild everything when we make a change. -->
+    <!-- See examples/build.html for an example of using the compiled/built javascript -->
+    <!-- that does not require any knowledge or use of require.js -->
+    <script src="static/components/requirejs/require.js" type="text/javascript" charset="utf-8"></script>
+    <script src="static/components/jquery/jquery.min.js"></script>
+    <script src="js/jser.js"></script>
+    <!-- or -->
+    <!-- // <script src="../static/components/jquery/jquery.min.js" type="text/javascript" charset="utf-8"></script> -->
+    <script>
+    var boxheight = $(window).height() - 100;
+      define('jquery', [], jQuery);
+
+      require.config({
+          
+          baseUrl: 'static/',
+          paths: {
+            underscore : 'components/underscore/underscore-min',
+            backbone : 'components/backbone/backbone-min',
+            // jquery: 'components/jquery/jquery.min',
+            jquery: 'empty:',
+            bootstrap: 'components/bootstrap/js/bootstrap.min',
+            // bootstraptour: 'components/bootstrap-tour/build/js/bootstrap-tour.min',
+            jqueryui: 'components/jquery-ui/ui/minified/jquery-ui.min',
+            moment: 'components/moment/moment',
+            codemirror: 'components/codemirror',
+            termjs: 'components/term.js/src/term',
+            'nbextensions/widgets': 'components/ipywidgets/ipywidgets/static',
+
+          },
+          shim: {
+            underscore: {
+              exports: '_'
+            },
+            backbone: {
+              deps: ["underscore", "jquery"],
+              exports: "Backbone"
+            },
+            bootstrap: {
+              deps: ["jquery"],
+              exports: "bootstrap"
+            },
+            jqueryui: {
+              deps: ["jquery"],
+              exports: "$"
+            }
+          }
+      });
+
+      // Require thebe, instantiate it
+      require(['main'], function(main){
+          // To run this locally, replace this url with the url of your notebook server or tmpnb server
+          thebe = new main.Thebe({
+          	tmpnb_mode: false,
+          	url:"http://10.0.200.59:8888",
+            //url:"https://tmp39.tmpnb.org",
+            // url:"https://192.168.99.100:8000",
+            // use the following settings if you are running from a
+            // single-user Jupyter notebook server
+            // url:"http://localhost:8888",
+            // tmpnb_mode: false
+            debug: false,
+            error_addendum:'出错了',
+            codemirror_theme_name:"ambiance",
+            append_kernel_controls_to:'#runbtn',
+            container_selector: "#mainBox",
+            add_interrupt_button: true
+          });
+
+      });
+
+    </script>
+    <link rel="stylesheet" type="text/css" href="css/css.css">
+</head>
+<body>
+<noscript>
+<div id='noscript'>
+      This page requires JavaScript.<br>
+      Please enable it to proceed.
+  </div>
+</noscript>
+<!-- main -->
+<div class="header">
+	<div class="left fl">Hx-Thebe</div>
+</div>
+<div class="snav">
+<div class="lay" id="runbtn">
+<div class="kernel_controls"><button class="btn" data-action="run-above">Run HxThebe</button> <button class="btn" data-action="interrupt">Interrupt</button> <button class="btn" data-action="restart" style="display: none">Restart</button></div>
+</div>
+</div>
+<div class="mainBox clearfix" id="mainBox">
+	<div class="left poa" id="mLeft">
+<pre data-executable="true" class="cool">
+# test
+z = "hello", 4+4
+print(z)
+</pre>
+	</div>
+	<div class="liner poa" id="mLiner"></div>
+	<div class="right poa" id="mRight">
+	<div id="rtop" class="rlay">
+		<!-- <iframe frameborder="0" scrolling="no" src="http://flash.tool.hexun.com/html_ma/20140522_StockGG/default.html?c=000001&amp;m=sse&amp;e=a&amp;width=600&amp;height=400" id="tabAiframe"></iframe> -->
+	</div>
+	<div id="rbot" class="rlay">
+		<div class="tab">
+			<div class="nv on">Log</div>
+			<div class="nv">Errors</div>
+		    <div class="spinner">
+			  <div class="bounce1"></div>
+			  <div class="bounce2"></div>
+			  <div class="bounce3"></div>
+			</div>
+			<p class="m btn" id="log_more">more<i></i></p>
+		</div>
+		<div id="tabcon" class="tabcon">
+		<div class="cont" id="tab0">
+			#操作日志
+		</div>
+		<div class="cont" id="tab1" style="display:none">
+			#错误日志
+		</div>
+		</div>
+	</div>
+	</div>
+</div>
+<!-- main e -->
+<script type="text/javascript">
+	var setdom = new hxthebe.dom.setdom().init();
+</script>
+</body>
+
+</html>
